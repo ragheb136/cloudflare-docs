@@ -9,8 +9,6 @@ Cloudflare Zero Trust subscriptions consist of seats that active users in your a
 
 The amount of seats available in your Zero Trust account depends on the amount of users you purchase. If you want to increase the number of seats available, you will have to purchase more users. Learn more about adding and removing seats from your account in the [Zero Trust FAQ](/cloudflare-one/faq/getting-started-faq/#how-do-i-change-my-subscription-plan).
 
-Access [service tokens](/cloudflare-one/identity/service-tokens/) do not consume seats.
-
 ## Authentication events
 
 A user consumes a seat when they perform an authentication event. For Access, this is any Cloudflare Access authentication event, like a login to the [App Launcher](/cloudflare-one/applications/app-launcher/) or an application. For Gateway, this means any Cloudflare WARP authentication event, like enrolling a device to your Zero Trust organization.
@@ -18,6 +16,8 @@ A user consumes a seat when they perform an authentication event. For Access, th
 If either one of these events occurs, that user's identity is added as an Active user to Zero Trust and consumes one seat from your plan. The user will occupy and consume a single seat regardless of the number of applications accessed or login events from their user account. Once the total amount of seats in the subscription has been consumed, additional users who attempt to log in are blocked.
 
 A user who authenticates will hold their seat until you [remove the user](#remove-a-user) from your account. By default, inactive users will not be [automatically removed](#enable-seat-expiration) from your account. You can remove a single user or all users at any time, and those users will immediately stop counting against the seat count defined in your subscription.
+
+If you notice a number of accounts greater than the number of your users, you may need to configure an Access [bypass policy](/cloudflare-one/policies/access/#bypass). Alternatively, you can use Access [service tokens](/cloudflare-one/identity/service-tokens/) to allow access to applications without consuming seats.
 
 ## Manage users
 
@@ -36,6 +36,8 @@ To revoke a user from your Zero Trust organization:
 3. Select **Action** > **Revoke**.
 4. Select **Revoke sessions**.
 
+Revoked users can still log in if your policies allow them.
+
 ### Remove a user
 
 Removing a user from your Zero Trust organization will free up the seat the user consumed. The user will still appear in your list of users.
@@ -52,7 +54,7 @@ The user will now show as **Inactive** and will no longer occupy a seat. If a us
 To automate the removal of users who have not logged in or triggered a device enrollment in a specific amount of time, turn on [seat expiration](#enable-seat-expiration).
 
 :::note[User record persistence]
-You cannot delete or archive a user record. You can [remove a user](#remove-a-user) from a seat, but their user record will remain in your Zero Trust organization.
+You cannot delete or archive a user record. You can [remove a user](#remove-a-user) from a seat, but their user record will remain in your Zero Trust organization. Inactive users do not count towards billing.
 :::
 
 ### Enable seat expiration
